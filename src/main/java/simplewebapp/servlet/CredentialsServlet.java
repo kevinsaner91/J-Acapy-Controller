@@ -2,8 +2,11 @@ package simplewebapp.servlet;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Scanner;
+import java.util.Set;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -11,21 +14,22 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.xml.crypto.dsig.keyinfo.KeyValue;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
-import com.owlike.genson.Genson;
+import simplewebapp.beans.Credential;
 
-import simplewebapp.beans.ActiveConnection;
-import simplewebapp.beans.Attrs;
-import simplewebapp.beans.CredentialResult;
-import simplewebapp.beans.Credentials;
-import simplewebapp.beans.Result;
+
+
+
 
 @WebServlet(urlPatterns = { "/credentials" })
 public class CredentialsServlet extends HttpServlet{
@@ -36,6 +40,7 @@ public class CredentialsServlet extends HttpServlet{
 	}
 
 	// Show Login page.
+	@SuppressWarnings("deprecation")
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
@@ -53,24 +58,48 @@ public class CredentialsServlet extends HttpServlet{
 				System.out.println(nextLine);
 				httpcontent.add(nextLine);
 			}
+		
+			JSONParser parser = new JSONParser();
 
-			Credentials credentials = new Genson().deserialize(httpcontent.get(0), Credentials.class);
+			try {
+				JSONObject credentials = (JSONObject) parser.parse(httpcontent.get(0));
+				JSONArray array = (JSONArray) credentials.get("results");
 
-			List<CredentialResult> credeList = credentials.getResults();
-			List<Attrs> attrs = new ArrayList<Attrs>();
-			List<String> referent = new ArrayList<String>();
-			
-			for(CredentialResult cr : credeList ) {
-				referent.add(cr.getReferent());
-				attrs.add(cr.getAttrs());
+				Iterator<JSONObject> iterator = array.iterator();
+				List<String> keyValues = new ArrayList();
+				
+				while (iterator.hasNext()) {
+					JSONObject credentialJSON = (JSONObject) iterator.next();
+					JSONObject attrs = (JSONObject) credentialJSON.get("attrs");
+					System.out.println(attrs);
+					
+					Iterator<String> keys = attrs.keySet().iterator();
+					while(keys.hasNext()) {
+						keyValues.add(keys.next());
+					}
+					
+					Iterator<String> values = attrs.values().iterator();
+					while(values.hasNext()) {
+						keyValues.add(values.next());
+					}
+					
+					Credential credential = new Credential(credentialJSON.get("referent").toString(), keyValues.get(0), keyValues.get(1), keyValues.get(2),
+							keyValues.get(3), keyValues.get(4), keyValues.get(5), keyValues.get(6), keyValues.get(7),
+							keyValues.get(8), keyValues.get(9));
+					
+					System.out.println(credential.toString());
+					
+					request.setAttribute("credentialList", credential);
+
+				}
+			} catch (ParseException e) { // TODO Auto-generated catch block e.printStackTrace();
 			}
 
 			String errorString = null;
 
 			// Store info in request attribute, before forward to views
 			request.setAttribute("errorString", errorString);
-			request.setAttribute("referent_id", referent);
-			request.setAttribute("credentialList", attrs);
+			
 		}
 
 		// Forward to /WEB-INF/views/loginView.jsp
@@ -89,6 +118,13 @@ public class CredentialsServlet extends HttpServlet{
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
+	}
+	
+	
+	private String getValue() {
+		
+		//check here if out of bounds and return an empty string if so
+		return "";
 	}
 
 }

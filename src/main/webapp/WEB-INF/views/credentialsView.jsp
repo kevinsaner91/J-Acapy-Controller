@@ -22,22 +22,27 @@
 
     <table border="1" cellpadding="5" cellspacing="1" >
        <tr>
-          <th>Name</th>
-          <th>Age</th>
-          <th>Date</th>
-          <th>Degree</th>
-          <th>Delete</th>
+          <th>ID</th>
+          <th>Attribute 1</th>
+          <th>Attribute 2</th>
+          <th>Attribute 3</th>
+          <th>Attribute 4</th>
+          <th>Attribute 5</th>
+          <th>Delete</th>       
        </tr>
        <c:forEach items="${credentialList}" var="credentialResult" >
           <tr>
-             <td>${credentialResult.name}</td>
-             <td>${credentialResult.age}</td>
-             <td>${credentialResult.date}</td>
-             <td>${credentialResult.degree}</td>
+          	 <td>${credentialResult.referent}</td>
+             <td>${credentialResult.key1}${credentialResult.value1}</td>
+             <td>${credentialResult.key2}${credentialResult.value2}</td>
+             <td>${credentialResult.key3}${credentialResult.value3}</td>
+             <td>${credentialResult.key4}${credentialResult.value4}</td>
+             <td>${credentialResult.key5}${credentialResult.value5}</td>
              <td>
                 <a href="delete?referent=${credentialResult.referent}">Delete</a>
              </td>
           </tr>
+          
        </c:forEach>
     </table>
 

@@ -21,9 +21,10 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 
+import com.owlike.genson.Genson;
+
 import simplewebapp.beans.Connection;
 import simplewebapp.beans.UserAccount;
-import simplewebapp.json.util.JSONUtil;
 import simplewebapp.utils.DBUtils;
 import simplewebapp.utils.MyUtils;
 
@@ -74,7 +75,7 @@ public class newConnectionServlet extends HttpServlet {
             	connectionString = EntityUtils.toString(response1.getEntity());
             	System.out.println(connectionString);
             	
-            	Connection connection = JSONUtil.deserialize(connectionString);
+            	Connection connection = new Genson().deserialize(connectionString, Connection.class);
             	
             	if(connection != null) {
             		request.setAttribute("connectionString", connection.getInvitation_url());
