@@ -25,21 +25,21 @@ import org.apache.http.impl.client.HttpClients;
 import simplewebapp.utils.DBUtils;
 import simplewebapp.utils.MyUtils;
 
-@WebServlet(urlPatterns = { "/deleteCredential" })
-public class DeleteCredentialsServlet extends HttpServlet{
+@WebServlet(urlPatterns = { "/delete" })
+public class DeleteConnectionServlet extends HttpServlet{
 	private static final long serialVersionUID = 1L;
 	
-	public DeleteCredentialsServlet() {
+	public DeleteConnectionServlet() {
 		super();
 	}
 
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		String referent = (String) request.getParameter("referent");
+		String connection_id = (String) request.getParameter("connection_id");
 
-		System.out.println(referent);
-		String URL = "https://alice-api.educa.ch/credential/" + referent + "/remove";
+		System.out.println(connection_id);
+		String URL = "https://alice-api.educa.ch/connections/" + connection_id + "/remove";
 		
 		CloseableHttpClient httpclient = HttpClients.createDefault();
 
@@ -67,7 +67,7 @@ public class DeleteCredentialsServlet extends HttpServlet{
 		// If everything nice.
 		// Redirect to the product listing page.		
 		else {
-			response.sendRedirect(request.getContextPath() + "/credentials");
+			response.sendRedirect(request.getContextPath() + "/active");
 		}
 
 	}

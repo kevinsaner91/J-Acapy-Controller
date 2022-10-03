@@ -37,7 +37,7 @@
              <td>${credentialResult.attr4Key}: ${credentialResult.attr4Value}</td>
              <td>${credentialResult.attr5Key}: ${credentialResult.attr5Value}</td>
              <td>
-                <a href="delete?referent=${credentialResult.referent}">Delete</a>
+                <a href="deleteCredential?referent=${credentialResult.referent}">Delete</a>
              </td>
           </tr>
           
