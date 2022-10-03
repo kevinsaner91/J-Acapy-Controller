@@ -102,7 +102,7 @@ public class CredentialsServlet extends HttpServlet{
 						credential.setAttr4Key(keys.get(3));
 						credential.setAttr4Value(values.get(3));
 					}
-					if(keys.size() == 5) {
+					if(keys.size() >= 5) {
 						credential.setAttr5Key(keys.get(4));
 						credential.setAttr5Value(values.get(4));
 					}

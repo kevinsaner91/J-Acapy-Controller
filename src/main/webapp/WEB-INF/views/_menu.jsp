@@ -10,5 +10,7 @@
    <a href="${pageContext.request.contextPath}/connection">Connection</a>
    |
    <a href="${pageContext.request.contextPath}/credentials">Credentials</a>
+   |
+   <a href="${pageContext.request.contextPath}/proofRequests">Proof Requests</a>
    
 </div>  
