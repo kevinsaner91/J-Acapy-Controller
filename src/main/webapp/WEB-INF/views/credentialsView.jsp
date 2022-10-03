@@ -22,7 +22,6 @@
 
     <table border="1" cellpadding="5" cellspacing="1" >
        <tr>
-          <th>ID</th>
           <th>Attribute 1</th>
           <th>Attribute 2</th>
           <th>Attribute 3</th>
@@ -32,12 +31,11 @@
        </tr>
        <c:forEach items="${credentialList}" var="credentialResult" >
           <tr>
-          	 <td>${credentialResult.referent}</td>
-             <td>${credentialResult.key1}${credentialResult.value1}</td>
-             <td>${credentialResult.key2}${credentialResult.value2}</td>
-             <td>${credentialResult.key3}${credentialResult.value3}</td>
-             <td>${credentialResult.key4}${credentialResult.value4}</td>
-             <td>${credentialResult.key5}${credentialResult.value5}</td>
+             <td>${credentialResult.attr1Key}: ${credentialResult.attr1Value}</td>
+             <td>${credentialResult.attr2Key}: ${credentialResult.attr2Value}</td>
+             <td>${credentialResult.attr3Key}: ${credentialResult.attr3Value}</td>
+             <td>${credentialResult.attr4Key}: ${credentialResult.attr4Value}</td>
+             <td>${credentialResult.attr5Key}: ${credentialResult.attr5Value}</td>
              <td>
                 <a href="delete?referent=${credentialResult.referent}">Delete</a>
              </td>

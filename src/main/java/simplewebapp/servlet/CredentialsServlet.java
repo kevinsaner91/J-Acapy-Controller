@@ -39,8 +39,6 @@ public class CredentialsServlet extends HttpServlet{
 		super();
 	}
 
-	// Show Login page.
-	@SuppressWarnings("deprecation")
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
@@ -66,32 +64,55 @@ public class CredentialsServlet extends HttpServlet{
 				JSONArray array = (JSONArray) credentials.get("results");
 
 				Iterator<JSONObject> iterator = array.iterator();
-				List<String> keyValues = new ArrayList();
+				List<String> keys = new ArrayList();
+				List<String> values = new ArrayList();
+				List<Credential> credentialsList = new ArrayList<Credential>();
 				
 				while (iterator.hasNext()) {
 					JSONObject credentialJSON = (JSONObject) iterator.next();
 					JSONObject attrs = (JSONObject) credentialJSON.get("attrs");
 					System.out.println(attrs);
 					
-					Iterator<String> keys = attrs.keySet().iterator();
-					while(keys.hasNext()) {
-						keyValues.add(keys.next());
+					Iterator<String> keysIterator = attrs.keySet().iterator();
+					while(keysIterator.hasNext()) {
+						keys.add(keysIterator.next());
 					}
 					
-					Iterator<String> values = attrs.values().iterator();
-					while(values.hasNext()) {
-						keyValues.add(values.next());
+					Iterator<String> valuesIterator = attrs.values().iterator();
+					while(valuesIterator.hasNext()) {
+						values.add(valuesIterator.next());
+					}					
+				
+					Credential credential = new Credential();
+					credential.setReferent(credentialJSON.get("referent").toString());
+					
+					if(keys.size() >= 1) {
+						credential.setAttr1Key(keys.get(0));
+						credential.setAttr1Value(values.get(0));
+					}
+					if(keys.size() >= 2) {
+						credential.setAttr2Key(keys.get(1));
+						credential.setAttr2Value(values.get(1));
+					}
+					if(keys.size() >= 3) {
+						credential.setAttr3Key(keys.get(2));
+						credential.setAttr3Value(values.get(2));
+					}
+					if(keys.size() >= 4) {
+						credential.setAttr4Key(keys.get(3));
+						credential.setAttr4Value(values.get(3));
+					}
+					if(keys.size() == 5) {
+						credential.setAttr5Key(keys.get(4));
+						credential.setAttr5Value(values.get(4));
 					}
 					
-					Credential credential = new Credential(credentialJSON.get("referent").toString(), keyValues.get(0), keyValues.get(1), keyValues.get(2),
-							keyValues.get(3), keyValues.get(4), keyValues.get(5), keyValues.get(6), keyValues.get(7),
-							keyValues.get(8), keyValues.get(9));
-					
+					credentialsList.add(credential);
 					System.out.println(credential.toString());
 					
-					request.setAttribute("credentialList", credential);
-
 				}
+				request.setAttribute("credentialList", credentialsList);
+				
 			} catch (ParseException e) { // TODO Auto-generated catch block e.printStackTrace();
 			}
 
@@ -120,11 +141,6 @@ public class CredentialsServlet extends HttpServlet{
 
 	}
 	
-	
-	private String getValue() {
-		
-		//check here if out of bounds and return an empty string if so
-		return "";
-	}
+
 
 }
